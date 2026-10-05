@@ -86,6 +86,7 @@ kotlin {
             implementation(libs.compose.uiTooling)
 
             // NUEVAS
+            implementation(libs.koin.android)
             implementation(libs.sqldelight.android.driver)
             implementation(libs.ktor.client.okhttp)
         }
