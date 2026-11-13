@@ -1,0 +1,33 @@
+CREATE TABLE product (
+    id TEXT NOT NULL PRIMARY KEY,
+    barcode TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    price REAL NOT NULL,
+    cost_price REAL NOT NULL,
+    stock INTEGER NOT NULL,
+    min_stock INTEGER NOT NULL
+);
+
+selectByBarcode:
+SELECT *
+FROM product
+WHERE barcode = ?
+LIMIT 1;
+
+countProducts:
+SELECT COUNT(*)
+FROM product;
+
+insertOrReplaceProduct:
+INSERT OR REPLACE INTO product(
+    id,
+    barcode,
+    name,
+    description,
+    price,
+    cost_price,
+    stock,
+    min_stock
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
