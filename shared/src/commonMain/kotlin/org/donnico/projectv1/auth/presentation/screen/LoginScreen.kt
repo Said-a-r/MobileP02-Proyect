@@ -97,7 +97,7 @@ fun LoginScreen(
                 )
 
                 Text(
-                    text = "Sistema de gestión de calzado",
+                    text = "Sistema de gestion de calzado",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )
@@ -136,7 +136,7 @@ fun LoginScreen(
                 // Campo contraseña
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = "CONTRASEÑA",
+                        text = "CONTRASENA",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.Gray,
@@ -148,7 +148,7 @@ fun LoginScreen(
                         onValueChange = { viewModel.onEvent(LoginEvent.PasswordChanged(it)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        placeholder = { Text("Ingresa tu contraseña", color = Color.LightGray) },
+                        placeholder = { Text("Ingresa tu contrasena", color = Color.LightGray) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         colors = OutlinedTextFieldDefaults.colors(

@@ -11,7 +11,7 @@ import org.donnico.projectv1.product.domain.repository.ProductRepository
 class FindProductByBarcodeUseCaseTest {
     private val product = Product(
         id = "product-1",
-        barcode = "7790000000011",
+        barcode = "7790000000010",
         name = "Zapatilla urbana",
         description = "Producto de prueba",
         price = 350.0,
@@ -24,7 +24,7 @@ class FindProductByBarcodeUseCaseTest {
     fun `returns product when barcode exists`() = runBlocking {
         val useCase = FindProductByBarcodeUseCase(FakeProductRepository(product))
 
-        val result = useCase(" 7790000000011 ")
+        val result = useCase(" 7790000000010 ")
 
         val found = assertIs<ProductSearchResult.Found>(result)
         assertEquals(product, found.product)

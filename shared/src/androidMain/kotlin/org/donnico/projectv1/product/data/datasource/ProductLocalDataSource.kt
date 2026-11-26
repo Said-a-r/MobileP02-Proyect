@@ -1,39 +1,33 @@
 package org.donnico.projectv1.product.data.datasource
 
-import org.donnico.projectv1.data.local.DonNicoDatabase
+import org.donnico.projectv1.product.data.local.ProductDao
 import org.donnico.projectv1.product.data.mapper.toDomain
+import org.donnico.projectv1.product.data.mapper.toEntity
 import org.donnico.projectv1.product.domain.model.Product
 
 class ProductLocalDataSource(
-    private val database: DonNicoDatabase
+    private val productDao: ProductDao
 ) {
-    fun findByBarcode(barcode: String): Product? =
-        database.productQueries.selectByBarcode(barcode).executeAsOneOrNull()?.toDomain()
+    suspend fun findByBarcode(barcode: String): Product? =
+        productDao.findByBarcode(barcode)?.toDomain()
 
-    fun save(product: Product) {
-        database.productQueries.insertOrReplaceProduct(
-            id = product.id,
-            barcode = product.barcode,
-            name = product.name,
-            description = product.description,
-            price = product.price,
-            cost_price = product.costPrice,
-            stock = product.stock,
-            min_stock = product.minStock
-        )
+    suspend fun save(product: Product) {
+        productDao.insertOrReplace(product.toEntity())
     }
 
-    fun seedProductsIfEmpty() {
-        if (database.productQueries.countProducts().executeAsOne() > 0L) return
+    suspend fun seedProductsIfEmpty() {
+        if (productDao.countProducts() > 0L) return
 
-        sampleProducts.forEach(::save)
+        for (product in sampleProducts) {
+            save(product)
+        }
     }
 
     private companion object {
         val sampleProducts = listOf(
             Product(
                 id = "product-1",
-                barcode = "7790000000011",
+                barcode = "7790000000010",
                 name = "Zapatilla urbana",
                 description = "Zapatilla de uso diario",
                 price = 350.0,
@@ -43,9 +37,9 @@ class ProductLocalDataSource(
             ),
             Product(
                 id = "product-2",
-                barcode = "7790000000028",
+                barcode = "7790000000027",
                 name = "Sandalia dama",
-                description = "Sandalia de tiras para temporada de verano.",
+                description = "Sandalia de tiras para temporada de verano",
                 price = 220.0,
                 costPrice = 115.0,
                 stock = 8,
@@ -53,9 +47,9 @@ class ProductLocalDataSource(
             ),
             Product(
                 id = "product-3",
-                barcode = "7790000000035",
+                barcode = "7790000000034",
                 name = "Bota caballero",
-                description = "Bota de cuero con suela de goma.",
+                description = "Bota de cuero con suela de goma",
                 price = 480.0,
                 costPrice = 265.0,
                 stock = 5,
