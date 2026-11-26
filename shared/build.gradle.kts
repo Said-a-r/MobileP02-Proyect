@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.gradle.api.tasks.testing.Test
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -6,7 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.sqldelight)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -71,10 +72,6 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
 
-            // SQLDelight
-            implementation(libs.sqldelight.runtime)
-            implementation(libs.sqldelight.coroutines)
-
             // Ktor
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -87,31 +84,40 @@ kotlin {
 
             // NUEVAS
             implementation(libs.koin.android)
-            implementation(libs.sqldelight.android.driver)
+            implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.room.runtime)
+            implementation(libs.room.ktx)
+            implementation(libs.camera.core)
+            implementation(libs.camera.camera2)
+            implementation(libs.camera.lifecycle)
+            implementation(libs.camera.view)
+            implementation(libs.mlkit.barcode)
         }
 
         iosMain.dependencies {
             // NUEVAS
-            implementation(libs.sqldelight.native.driver)
             implementation(libs.ktor.client.darwin)
         }
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+
     }
 }
 
-//configuración SQLDelight
-sqldelight {
-    databases {
-        create("DonNicoDatabase") {
-            packageName.set("org.donnico.projectv1.data.local")
-        }
-    }
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {
+    add("kspAndroid", libs.room.compiler)
+    add("androidHostTestImplementation", libs.androidx.testExt.junit)
+    add("androidHostTestImplementation", libs.robolectric)
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+tasks.withType<Test>().configureEach {
+    jvmArgs("--add-opens=java.base/jdk.internal.access=ALL-UNNAMED")
 }

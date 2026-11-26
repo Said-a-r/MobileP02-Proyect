@@ -7,6 +7,6 @@ class AuthLocalDataSource {
         if (username == "admin" && password == "1234") {
             Result.success(User(username))
         } else {
-            Result.failure(Exception("Usuario o contraseña incorrectos"))
+            Result.failure(Exception("Usuario o contrasena incorrectos"))
         }
 }
